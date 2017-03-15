@@ -23,17 +23,11 @@ do
 
     # SCAN for errors
     shortReason=''
-    while read l; do
-
-        if [[ $l == "FAILURES"* ]] ;
-        then
-            shortReason=$(head -5 "$runningTest")
-            shortReason=${shortReason//[$'\t\r\n ' / ]}
-            shortReason=${shortReason//[$'\t\r\n']}
-            break
-        fi
-
-    done < "$runningTest"
+    if grep -q "FAILURES!!!" $runningTest; then
+        shortReason=$(head -5 "$runningTest")
+        shortReason=${shortReason//[$'\t\r\n ' / ]}
+        shortReason=${shortReason//[$'\t\r\n']}
+    fi
 
     # if 'shortReason' is not empty, then we found a bug!
     if [ ! -z "$shortReason" ] ; then
