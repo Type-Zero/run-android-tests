@@ -5,8 +5,15 @@
 planFile=$1
 outputDir=$2
 
+# check for correct input
 if [ -z $planFile ] || [ -z $outputDir ] ; then
     echo "Missing params"
+    exit 1
+fi
+
+# check for connected devices
+if [ -z "$(adb devices | grep -v List | grep device)" ] ; then
+    echo "No connected devices"
     exit 1
 fi
 
