@@ -1,9 +1,12 @@
-package com.sromku.sample.runtests;
+package com.sromku.sample.runtests.basic;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
+
+import com.sromku.sample.runtests.ClearData;
+import com.sromku.sample.runtests.MainActivity;
 
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
@@ -34,6 +37,14 @@ public class ExampleInstrumentedTest {
         assertEquals("com.sromku.sample.runtests.wrong", appContext.getPackageName());
     }
 
+    @Test
+    @ClearData
+    public void useAppContextAnother() throws Exception {
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        sleep(2000);
+        assertEquals("com.sromku.sample.runtests", appContext.getPackageName());
+    }
+
     private static void sleep(long mls) {
         try {
             Thread.sleep(mls);
@@ -41,5 +52,6 @@ public class ExampleInstrumentedTest {
             // do nothing
         }
     }
+
 
 }
