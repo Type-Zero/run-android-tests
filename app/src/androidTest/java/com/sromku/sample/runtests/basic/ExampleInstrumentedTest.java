@@ -5,8 +5,8 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.sromku.sample.runtests.ClearData;
 import com.sromku.sample.runtests.MainActivity;
+import com.sromku.sample.runtests.Utils;
 
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
@@ -26,32 +26,15 @@ public class ExampleInstrumentedTest {
     @Test
     public void useAppContext() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
-        sleep(2000);
+        Utils.sleep(2000);
         assertEquals("com.sromku.sample.runtests", appContext.getPackageName());
     }
 
     @Test
     public void useAppContextSoundsWrong() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
-        sleep(2000);
+        Utils.sleep(2000);
         assertEquals("com.sromku.sample.runtests.wrong", appContext.getPackageName());
     }
-
-    @Test
-    @ClearData
-    public void useAppContextAnother() throws Exception {
-        Context appContext = InstrumentationRegistry.getTargetContext();
-        sleep(2000);
-        assertEquals("com.sromku.sample.runtests", appContext.getPackageName());
-    }
-
-    private static void sleep(long mls) {
-        try {
-            Thread.sleep(mls);
-        } catch (InterruptedException e) {
-            // do nothing
-        }
-    }
-
 
 }

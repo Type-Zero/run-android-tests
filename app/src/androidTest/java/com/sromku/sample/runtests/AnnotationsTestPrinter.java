@@ -29,6 +29,10 @@ public class AnnotationsTestPrinter extends InstrumentationRunListener {
         for (Annotation annotation : annotations) {
             if (comm) stringBuilder.append(",");
             stringBuilder.append(annotation.annotationType().getSimpleName());
+            if (annotation instanceof Parameterized.Repeat) {
+                Parameterized.Repeat repeat = (Parameterized.Repeat) annotation;
+                stringBuilder.append(":" + repeat.count());
+            }
             comm = true;
         }
 
