@@ -20,6 +20,9 @@ testNames=()
 # [a|a|a|b|c|c|c|c|c|d] - this is array of in the same length as of tests
 classNames=()
 
+# [same length as of tests]
+annotations=()
+
 index=-1
 while read p; do
 
@@ -55,10 +58,32 @@ while read p; do
         continue
     fi
 
+    if [[ $p == *"annotations="* ]] ;
+    then
+        arrIN=(${p//=/ })
+        annotation=${arrIN[2]}
+        annotation="${annotation//[$'\t\r\n ']}"
+        annotations+=("$annotation")
+        continue
+    fi
+
 done < "$rawTests"
 
 for i in "${!classNames[@]}"
 do
+
+    # print clear if annotation appears
+    annotation=${annotations[$i]}
+    anns=(${annotation//,/ })
+    for a in "${anns[@]}"
+    do
+        if [ "$a" == "ClearData" ] ; then
+            echo "clearData" >> $planOutput
+        fi
+        if [ "$a" == "ClearNotifications" ] ; then
+            echo "clearNotifications" >> $planOutput
+        fi
+    done
 
     # print executable test name
     fullTest="${classNames[$i]}#${testNames[$i]}"

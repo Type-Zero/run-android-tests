@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Created by sromku with ☕
-
+package=com.sromku.sample.runtests
 planFile=$1
 outputDir=$2
 
@@ -29,7 +29,7 @@ do
 
     # in case of clear data we execute and move to next line
     if [ $line == "clearData" ]; then
-        adb shell pm clear com.sromku.sample.runtests
+        adb shell pm clear $package
         sleep 3
         echo ""
         continue
@@ -44,7 +44,7 @@ do
     PID_RECORDING=$!
 
     # run test
-    adb shell am instrument -w -e class $line com.sromku.sample.runtests.test/android.support.test.runner.AndroidJUnitRunner > $runningTest
+    adb shell am instrument -w -e class $line $package.test/android.support.test.runner.AndroidJUnitRunner > $runningTest
 
     # kill logcat process
     kill $PID_LOGCAT
@@ -70,7 +70,10 @@ do
     if [ ! -z "$shortReason" ] ; then
 
         # dump db
-        adb shell "run-as com.sromku.sample.runtests cat /data/data/com.sromku.sample.runtests/databases/app.db" > artifacts/app.db
+        adb shell "run-as $package cat /data/data/$package/databases/app.db" > artifacts/app.db
+
+        # extract preferences
+        adb shell "run-as $package cat /data/data/$package/shared_prefs/'$package'_preferences.xml" > artifacts/shared_preferences.xml
 
         # exit on fail
         echo "[x] FAIL"

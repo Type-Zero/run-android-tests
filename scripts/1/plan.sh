@@ -2,6 +2,7 @@
 
 # Created by sromku with ☕
 
+package=com.sromku.sample.runtests
 rawTests=$1
 planOutput=$2
 
@@ -23,7 +24,7 @@ classNames=()
 index=-1
 while read p; do
 
-    if [[ $p == "com.sromku.sample.runtests"* ]] ;
+    if [[ $p == "$package"* ]] ;
     then
         className="${p//[$'\t\r\n ']}"
         className=${className%:}

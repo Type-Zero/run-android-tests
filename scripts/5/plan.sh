@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Created by sromku with ☕
-
+package=com.sromku.sample.runtests
 rawTests=$1
 planOutput=$2
 
@@ -26,7 +26,7 @@ annotations=()
 index=-1
 while read p; do
 
-    if [[ $p == "com.sromku.sample.runtests"* ]] ;
+    if [[ $p == "$package"* ]] ;
     then
         className="${p//[$'\t\r\n ']}"
         className=${className%:}
@@ -73,6 +73,7 @@ for i in "${!classNames[@]}"
 do
     # flags we can set
     clearData=false
+    clearNotifications=false
     repeat=0
 
     # check if we have repeat, clear data and other flags
@@ -83,6 +84,11 @@ do
         # check for clear data
         if [ "$a" == "ClearData" ] ; then
             clearData=true
+        fi
+
+        # check for clear notifications
+        if [ "$a" == "ClearNotifications" ] ; then
+            clearNotifications=true
         fi
 
         # check for number of repeats
@@ -106,6 +112,11 @@ do
         # if we need to clear data
         if $clearData; then
             echo "clearData" >> $planOutput
+        fi
+
+        # if we need to clear notifications
+        if $clearNotifications; then
+            echo "clearNotifications" >> $planOutput
         fi
 
         # print executable test name

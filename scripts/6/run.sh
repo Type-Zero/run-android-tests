@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Created by sromku with ☕
-
+package=com.sromku.sample.runtests
 planFile=$1
 outputDir=$2
 
@@ -17,6 +17,18 @@ if [ -z "$(adb devices | grep -v List | grep device)" ] ; then
     exit 1
 fi
 
+# clean notifications
+cleanNotifications() {
+    adb shell input keyevent 3
+    adb shell input swipe 0 0 0 300
+    num=$(adb shell dumpsys notification | grep NotificationRecord | wc -l)
+    while [ $num -gt 0 ]; do
+        adb shell input swipe 0 400 300 400
+        num=$(( $num - 1 ))
+    done
+    adb shell input keyevent 3
+}
+
 runningTest="$outputDir/running-test.txt"
 recording="recording.mp4"
 logcat="$outputDir/logcat.txt"
@@ -29,7 +41,15 @@ do
 
     # in case of clear data we execute and move to next line
     if [ $line == "clearData" ]; then
-        adb shell pm clear com.sromku.sample.runtests
+        adb shell pm clear $package
+        sleep 3
+        echo ""
+        continue
+    fi
+
+    # in case of clear notifications we execute and move to next line
+    if [ $line == "clearNotifications" ]; then
+        cleanNotifications
         sleep 3
         echo ""
         continue
@@ -49,10 +69,10 @@ do
         testArr=(${line//:/ })
         test=${testArr[0]}
         index=${testArr[1]}
-        adb shell am instrument -w -e class $test -e paramIndex $index com.sromku.sample.runtests.test/android.support.test.runner.AndroidJUnitRunner > $runningTest
+        adb shell am instrument -w -e class $test -e paramIndex $index $package.test/android.support.test.runner.AndroidJUnitRunner > $runningTest
     else
         # run as usual
-        adb shell am instrument -w -e class $line com.sromku.sample.runtests.test/android.support.test.runner.AndroidJUnitRunner > $runningTest
+        adb shell am instrument -w -e class $line $package.test/android.support.test.runner.AndroidJUnitRunner > $runningTest
     fi
 
     # kill logcat process
@@ -79,7 +99,10 @@ do
     if [ ! -z "$shortReason" ] ; then
 
         # dump db
-        adb shell "run-as com.sromku.sample.runtests cat /data/data/com.sromku.sample.runtests/databases/app.db" > artifacts/app.db
+        adb shell "run-as $package cat /data/data/$package/databases/app.db" > artifacts/app.db
+
+        # extract preferences
+        adb shell "run-as $package cat /data/data/$package/shared_prefs/'$package'_preferences.xml" > artifacts/shared_preferences.xml
 
         # exit on fail
         echo "[x] FAIL"

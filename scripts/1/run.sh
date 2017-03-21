@@ -2,6 +2,7 @@
 
 # Created by sromku with ☕
 
+package=com.sromku.sample.runtests
 planFile=$1
 outputDir=$2
 
@@ -26,7 +27,7 @@ do
     echo "$line"
 
     # run test
-    adb shell am instrument -w -e class $line com.sromku.sample.runtests.test/android.support.test.runner.AndroidJUnitRunner > $runningTest
+    adb shell am instrument -w -e class $line $package.test/android.support.test.runner.AndroidJUnitRunner > $runningTest
 
     # SCAN for errors
     shortReason=''

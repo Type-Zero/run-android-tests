@@ -17,6 +17,18 @@ if [ -z "$(adb devices | grep -v List | grep device)" ] ; then
     exit 1
 fi
 
+# clean notifications
+cleanNotifications() {
+    adb shell input keyevent 3
+    adb shell input swipe 0 0 0 300
+    num=$(adb shell dumpsys notification | grep NotificationRecord | wc -l)
+    while [ $num -gt 0 ]; do
+        adb shell input swipe 0 400 300 400
+        num=$(( $num - 1 ))
+    done
+    adb shell input keyevent 3
+}
+
 runningTest="$outputDir/running-test.txt"
 recording="recording.mp4"
 logcat="$outputDir/logcat.txt"
@@ -26,6 +38,22 @@ do
 
     # print full test name
     echo "$line"
+
+    # in case of clear data we execute and move to next line
+    if [ $line == "clearData" ]; then
+        adb shell pm clear $package
+        sleep 3
+        echo ""
+        continue
+    fi
+
+    # in case of clear notifications we execute and move to next line
+    if [ $line == "clearNotifications" ]; then
+        cleanNotifications
+        sleep 3
+        echo ""
+        continue
+    fi
 
     # start collecting logs
     adb logcat > "$logcat" &

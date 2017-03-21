@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Created by sromku with ☕
-
+package=com.sromku.sample.runtests
 rawTests=$1
 planOutput=$2
 
@@ -26,7 +26,7 @@ annotations=()
 index=-1
 while read p; do
 
-    if [[ $p == "com.sromku.sample.runtests"* ]] ;
+    if [[ $p == "$package"* ]] ;
     then
         className="${p//[$'\t\r\n ']}"
         className=${className%:}
@@ -81,7 +81,6 @@ do
             echo "clearData" >> $planOutput
             break
         fi
-
     done
 
     # print executable test name
