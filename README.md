@@ -55,6 +55,17 @@ In addition to new added options, after each failed test, we fetching and buildi
 ### Run this sample
 
 ```bash
+# ---- assemble and install the app + test apks ----
+# build app APK
+./gradlew assembleDebug --stacktrace
+# build test APK
+./gradlew assembleAndroidTest --stacktrace
+# install app APK
+adb install -r app/build/outputs/apk/app-debug.apk
+# install test APK
+adb install -r app/build/outputs/apk/app-debug-androidTest.apk
+
+# ---- prepare and run the tests ----
 # create tests raw file
 ./scripts/raw.sh artifacts/raw-tests.txt
 # build execution plan and filter by tags
@@ -62,6 +73,8 @@ In addition to new added options, after each failed test, we fetching and buildi
 # run the tests
 ./scripts/run.sh artifacts/execution-plan.txt artifacts
 ```
+
+You will fail on one of tests. Now go and check the **artifacts** folder :wink:
 
 ### Explanation + Details
 
