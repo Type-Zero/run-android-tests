@@ -54,6 +54,10 @@ In addition to new added options, after each failed test, we fetching and buildi
 
 ### Run this sample
 
+> Note: <br>
+1. Use real device. <br>
+2. Works for me on Mac and Ubuntu VM (part of CI). 
+
 ```bash
 # ---- assemble and install the app + test apks ----
 # build app APK
@@ -74,7 +78,7 @@ adb install -r app/build/outputs/apk/app-debug-androidTest.apk
 ./scripts/run.sh artifacts/execution-plan.txt artifacts
 ```
 
-You will fail on one of tests. Now go and check the **artifacts** folder :wink:
+You will fail on one of tests :x:. Now go and check the **artifacts** :white_check_mark: folder :wink:
 
 ### Explanation + Details
 
