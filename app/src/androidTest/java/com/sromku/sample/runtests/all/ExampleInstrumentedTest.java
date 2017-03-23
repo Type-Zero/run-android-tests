@@ -1,4 +1,4 @@
-package com.sromku.sample.runtests.more;
+package com.sromku.sample.runtests.all;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -7,6 +7,8 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.sromku.sample.runtests.ClearData;
 import com.sromku.sample.runtests.MainActivity;
+import com.sromku.sample.runtests.Parameterized;
+import com.sromku.sample.runtests.Tags;
 import com.sromku.sample.runtests.Utils;
 
 import org.junit.FixMethodOrder;
@@ -25,18 +27,13 @@ public class ExampleInstrumentedTest {
     public IntentsTestRule<MainActivity> mActivity = new IntentsTestRule<>(MainActivity.class);
 
     @Test
+    @ClearData
+    @Tags(tags = {"sanity", "medium"})
+    @Parameterized.Repeat(count = 3)
     public void useAppContext() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
         Utils.sleep(2000);
         assertEquals("com.sromku.sample.runtests", appContext.getPackageName());
-    }
-
-    @Test
-    @ClearData
-    public void useAppContextAnother() throws Exception {
-        Context appContext = InstrumentationRegistry.getTargetContext();
-        Utils.sleep(2000);
-        assertEquals("com.sromku.sample.runtests.wrong", appContext.getPackageName());
     }
 
 }

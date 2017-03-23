@@ -17,8 +17,8 @@ if [ -z "$(adb devices | grep -v List | grep device)" ] ; then
     exit 1
 fi
 
-# clean notifications
-cleanNotifications() {
+# clear notifications
+clearNotifications() {
     adb shell input keyevent 3
     adb shell input swipe 0 0 0 300
     num=$(adb shell dumpsys notification | grep NotificationRecord | wc -l)
@@ -49,7 +49,7 @@ do
 
     # in case of clear notifications we execute and move to next line
     if [ $line == "clearNotifications" ]; then
-        cleanNotifications
+        clearNotifications
         sleep 3
         echo ""
         continue
