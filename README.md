@@ -80,6 +80,8 @@ adb install -r app/build/outputs/apk/app-debug-androidTest.apk
 
 You will fail on one of tests :x:. Now go and check the **artifacts** :white_check_mark: folder :wink:
 
+<img src="assets/artifacts.png"/>
+
 ### Explanation + Details
 
 Step by step details on this blog post: https://www.sromku.com/blog/run-android-ui-tests
