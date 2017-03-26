@@ -1,6 +1,6 @@
 # Running Android UI Tests
 
-Follow this blog post: https://www.sromku.com/blog/run-android-ui-tests
+Follow this blog post: https://medium.com/@sromku/running-android-ui-tests-53e85e5c8da8
 
 ### Running tests
 
@@ -84,7 +84,7 @@ You will fail on one of tests :x:. Now go and check the **artifacts** :white_che
 
 ### Explanation + Details
 
-Step by step details on this blog post: https://www.sromku.com/blog/run-android-ui-tests
+Step by step details on this blog post: https://medium.com/@sromku/running-android-ui-tests-53e85e5c8da8
 
 1. Building Execution Plan
 2. Collect Logs, Record Video, Dump DB, Shared Preferences
@@ -94,6 +94,10 @@ Step by step details on this blog post: https://www.sromku.com/blog/run-android-
 6. Run tests by #tags
 7. Dump network stats, battery, alarms and more.
 8. All together
+
+### Author
+
+[Roman Kushnarenko - sromku](https://github.com/sromku)
 
 ### License
 Apache 2.0
