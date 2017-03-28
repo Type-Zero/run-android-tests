@@ -26,6 +26,7 @@ public class AnnotationsTestPrinter extends InstrumentationRunListener {
         Bundle bundle = new Bundle();
         StringBuilder stringBuilder = new StringBuilder();
         boolean comm = false;
+        String tagsStr = "";
         for (Annotation annotation : annotations) {
             if (comm) stringBuilder.append(",");
             stringBuilder.append(annotation.annotationType().getSimpleName());
@@ -39,18 +40,17 @@ public class AnnotationsTestPrinter extends InstrumentationRunListener {
             // special case of Tags
             if (annotation instanceof Tags) {
                 Tags tags = (Tags) annotation;
-                printTags(tags.tags());
+                tagsStr = buildTags(tags.tags());
             }
             comm = true;
         }
 
         bundle.putString("annotations", stringBuilder.toString());
+        bundle.putString("tags", tagsStr);
         getInstrumentation().sendStatus(InstrumentationResultPrinter.REPORT_VALUE_RESULT_START, bundle);
-
     }
 
-    private void printTags(String[] tags) {
-        Bundle bundle = new Bundle();
+    private String buildTags(String[] tags) {
         StringBuilder stringBuilder = new StringBuilder();
         boolean comm = false;
         for (String tag : tags) {
@@ -58,7 +58,6 @@ public class AnnotationsTestPrinter extends InstrumentationRunListener {
             stringBuilder.append(tag);
             comm = true;
         }
-        bundle.putString("tags", stringBuilder.toString());
-        getInstrumentation().sendStatus(InstrumentationResultPrinter.REPORT_VALUE_RESULT_START, bundle);
+        return stringBuilder.toString();
     }
 }
