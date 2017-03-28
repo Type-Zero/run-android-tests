@@ -4,4 +4,4 @@
 package=com.sromku.sample.runtests
 rawTests=$1
 
-adb shell am instrument -w -r -e log true -e package $package.more -e listener $package.AnnotationsTestPrinter $package.test/android.support.test.runner.AndroidJUnitRunner > $rawTests
+adb shell am instrument -w -r -e log true -e package $package.clear -e listener $package.AnnotationsTestPrinter $package.test/android.support.test.runner.AndroidJUnitRunner > $rawTests
