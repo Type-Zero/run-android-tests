@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ExampleInstrumentedTest {
+public class SampleOne {
 
     @Rule
     public IntentsTestRule<MainActivity> mActivity = new IntentsTestRule<>(MainActivity.class);
@@ -28,21 +28,9 @@ public class ExampleInstrumentedTest {
     };
 
     @Test
-    @Parameterized.Repeat(count = 3)
-    @ClearData
-    public void useAppContext() throws Exception {
-        int index = Parameterized.getIndex();
-        if (index < 0) {
-            return;
-        }
-        String param = params[index];
-        Utils.sleep(2000);
-        assertEquals("a", param);
-    }
-
-    @Test
     @Parameterized.Repeat(count = 2)
-    public void useAppContextAnother() throws Exception {
+    @ClearData
+    public void testA() throws Exception {
         int index = Parameterized.getIndex();
         if (index < 0) {
             return;
@@ -53,7 +41,19 @@ public class ExampleInstrumentedTest {
     }
 
     @Test
-    public void useAppContextRegular() throws Exception {
+    @Parameterized.Repeat(count = 3)
+    public void testB() throws Exception {
+        int index = Parameterized.getIndex();
+        if (index < 0) {
+            return;
+        }
+        String param = params[index];
+        Utils.sleep(2000);
+        assertEquals("a", param);
+    }
+
+    @Test
+    public void testC() throws Exception {
         Utils.sleep(2000);
         assertEquals("a", "a");
     }

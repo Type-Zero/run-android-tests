@@ -5,10 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.sromku.sample.runtests.ClearData;
 import com.sromku.sample.runtests.MainActivity;
-import com.sromku.sample.runtests.Parameterized;
-import com.sromku.sample.runtests.Tags;
 import com.sromku.sample.runtests.Utils;
 
 import org.junit.FixMethodOrder;
@@ -21,19 +18,18 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ExampleInstrumentedTest {
+public class SampleTwo {
 
     @Rule
     public IntentsTestRule<MainActivity> mActivity = new IntentsTestRule<>(MainActivity.class);
 
     @Test
-    @ClearData
-    @Tags(tags = {"sanity", "medium"})
-    @Parameterized.Repeat(count = 3)
-    public void useAppContext() throws Exception {
+    public void testA() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
         Utils.sleep(2000);
         assertEquals("com.sromku.sample.runtests", appContext.getPackageName());
     }
+
+
 
 }

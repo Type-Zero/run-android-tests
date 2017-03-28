@@ -1,4 +1,4 @@
-package com.sromku.sample.runtests.more;
+package com.sromku.sample.runtests.clear;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -19,13 +19,13 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ExampleInstrumentedTest {
+public class SampleOne {
 
     @Rule
     public IntentsTestRule<MainActivity> mActivity = new IntentsTestRule<>(MainActivity.class);
 
     @Test
-    public void useAppContext() throws Exception {
+    public void testA() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
         Utils.sleep(2000);
         assertEquals("com.sromku.sample.runtests", appContext.getPackageName());
@@ -33,7 +33,7 @@ public class ExampleInstrumentedTest {
 
     @Test
     @ClearData
-    public void useAppContextAnother() throws Exception {
+    public void testB() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
         Utils.sleep(2000);
         assertEquals("com.sromku.sample.runtests.wrong", appContext.getPackageName());

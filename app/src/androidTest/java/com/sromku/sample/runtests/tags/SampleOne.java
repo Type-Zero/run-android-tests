@@ -19,22 +19,22 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ExampleInstrumentedTest {
+public class SampleOne {
 
     @Rule
     public IntentsTestRule<MainActivity> mActivity = new IntentsTestRule<>(MainActivity.class);
 
     @Test
     @Tags(tags = {"sanity", "small"})
-    public void useAppContext() throws Exception {
+    public void testA() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
-        Utils.sleep(2000);
+        Utils.sleep(1000);
         assertEquals("com.sromku.sample.runtests", appContext.getPackageName());
     }
 
     @Test
     @Tags(tags = {"sanity", "medium"})
-    public void useAppContextOther() throws Exception {
+    public void testB() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
         Utils.sleep(4000);
         assertEquals("com.sromku.sample.runtests", appContext.getPackageName());

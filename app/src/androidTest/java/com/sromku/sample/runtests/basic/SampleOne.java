@@ -1,11 +1,10 @@
-package com.sromku.sample.runtests.notif;
+package com.sromku.sample.runtests.basic;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.sromku.sample.runtests.ClearNotifications;
 import com.sromku.sample.runtests.MainActivity;
 import com.sromku.sample.runtests.Utils;
 
@@ -19,21 +18,20 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ExampleInstrumentedTest {
+public class SampleOne {
 
     @Rule
     public IntentsTestRule<MainActivity> mActivity = new IntentsTestRule<>(MainActivity.class);
 
     @Test
-    public void useAppContext() throws Exception {
+    public void testA() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
         Utils.sleep(2000);
         assertEquals("com.sromku.sample.runtests", appContext.getPackageName());
     }
 
     @Test
-    @ClearNotifications
-    public void useAppContextAnother() throws Exception {
+    public void testB() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
         Utils.sleep(2000);
         assertEquals("com.sromku.sample.runtests.wrong", appContext.getPackageName());
