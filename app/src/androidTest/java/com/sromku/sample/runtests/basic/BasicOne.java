@@ -1,4 +1,4 @@
-package com.sromku.sample.runtests.all;
+package com.sromku.sample.runtests.basic;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class SampleTwo {
+public class BasicOne {
 
     @Rule
     public IntentsTestRule<MainActivity> mActivity = new IntentsTestRule<>(MainActivity.class);
@@ -30,6 +30,11 @@ public class SampleTwo {
         assertEquals("com.sromku.sample.runtests", appContext.getPackageName());
     }
 
-
+    @Test
+    public void testB() throws Exception {
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        Utils.sleep(2000);
+        assertEquals("com.sromku.sample.runtests.wrong", appContext.getPackageName());
+    }
 
 }

@@ -1,12 +1,11 @@
-package com.sromku.sample.runtests.clear;
+package com.sromku.sample.runtests.param;
 
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.sromku.sample.runtests.ClearData;
 import com.sromku.sample.runtests.MainActivity;
+import com.sromku.sample.runtests.Parameterized;
 import com.sromku.sample.runtests.Utils;
 
 import org.junit.FixMethodOrder;
@@ -19,24 +18,38 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class SampleOne {
+public class ParamOne {
 
     @Rule
     public IntentsTestRule<MainActivity> mActivity = new IntentsTestRule<>(MainActivity.class);
 
+    private final String[] params = new String[]{
+            "a", "A", "Aa"
+    };
+
     @Test
+    @Parameterized.Repeat(count = 2)
+    @ClearData
     public void testA() throws Exception {
-        Context appContext = InstrumentationRegistry.getTargetContext();
+        int index = Parameterized.getIndex();
+        if (index < 0) {
+            return;
+        }
+        String param = params[index];
         Utils.sleep(2000);
-        assertEquals("com.sromku.sample.runtests", appContext.getPackageName());
+        assertEquals("a", param.toLowerCase());
     }
 
     @Test
-    @ClearData
+    @Parameterized.Repeat(count = 3)
     public void testB() throws Exception {
-        Context appContext = InstrumentationRegistry.getTargetContext();
+        int index = Parameterized.getIndex();
+        if (index < 0) {
+            return;
+        }
+        String param = params[index];
         Utils.sleep(2000);
-        assertEquals("com.sromku.sample.runtests.wrong", appContext.getPackageName());
+        assertEquals("a", param.toLowerCase());
     }
 
 }

@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class SampleOne {
+public class NotifOne {
 
     @Rule
     public IntentsTestRule<MainActivity> mActivity = new IntentsTestRule<>(MainActivity.class);
@@ -29,7 +29,6 @@ public class SampleOne {
         Context appContext = InstrumentationRegistry.getTargetContext();
         Utils.sleep(2000);
         assertEquals("com.sromku.sample.runtests", appContext.getPackageName());
-
         // TODO - send notifications
     }
 

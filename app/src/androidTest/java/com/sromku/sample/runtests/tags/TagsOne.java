@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class SampleOne {
+public class TagsOne {
 
     @Rule
     public IntentsTestRule<MainActivity> mActivity = new IntentsTestRule<>(MainActivity.class);
@@ -35,6 +35,30 @@ public class SampleOne {
     @Test
     @Tags(tags = {"sanity", "medium"})
     public void testB() throws Exception {
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        Utils.sleep(4000);
+        assertEquals("com.sromku.sample.runtests", appContext.getPackageName());
+    }
+
+    @Test
+    @Tags(tags = {"special"})
+    public void testC() throws Exception {
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        Utils.sleep(4000);
+        assertEquals("com.sromku.sample.runtests", appContext.getPackageName());
+    }
+
+    @Test
+    @Tags(tags = {"extreme", "special"})
+    public void testD() throws Exception {
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        Utils.sleep(4000);
+        assertEquals("com.sromku.sample.runtests", appContext.getPackageName());
+    }
+
+    @Test
+    @Tags(tags = {"extreme", "small", "medium", "special"})
+    public void testE() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
         Utils.sleep(4000);
         assertEquals("com.sromku.sample.runtests", appContext.getPackageName());

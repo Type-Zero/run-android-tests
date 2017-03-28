@@ -1,10 +1,11 @@
-package com.sromku.sample.runtests.basic;
+package com.sromku.sample.runtests.clear;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.sromku.sample.runtests.ClearData;
 import com.sromku.sample.runtests.MainActivity;
 import com.sromku.sample.runtests.Utils;
 
@@ -18,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class SampleOne {
+public class ClearOne {
 
     @Rule
     public IntentsTestRule<MainActivity> mActivity = new IntentsTestRule<>(MainActivity.class);
@@ -31,6 +32,7 @@ public class SampleOne {
     }
 
     @Test
+    @ClearData
     public void testB() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
         Utils.sleep(2000);
