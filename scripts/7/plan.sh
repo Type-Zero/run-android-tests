@@ -97,7 +97,13 @@ do
     clearData=false
     clearNotifications=false
     repeat=0
-    selected=true
+
+    # if we passed tags, then by default the test isn't selected
+    if [ ! -e $selectedTags ]; then
+        selected=false
+    else
+        selected=true
+    fi
 
     # check if we have repeat, clear data and other flags
     annotation=${annotations[$i]}
