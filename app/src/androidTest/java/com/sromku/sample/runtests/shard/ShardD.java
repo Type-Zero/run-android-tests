@@ -6,6 +6,7 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.sromku.sample.runtests.ClearData;
+import com.sromku.sample.runtests.Following;
 import com.sromku.sample.runtests.MainActivity;
 import com.sromku.sample.runtests.Utils;
 
@@ -80,6 +81,7 @@ public class ShardD {
 
     @Test
     @ClearData
+    @Following
     public void testG() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
         Utils.sleep(LARGE_TEST);
@@ -87,7 +89,7 @@ public class ShardD {
     }
 
     @Test
-    @ClearData
+    @Following
     public void testH() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
         Utils.sleep(SMALL_TEST);
@@ -104,6 +106,7 @@ public class ShardD {
 
     @Test
     @ClearData
+    @Following
     public void testJ() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
         Utils.sleep(SMALL_TEST);
