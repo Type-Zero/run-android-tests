@@ -24,8 +24,8 @@ import static org.junit.Assert.assertEquals;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ShardA {
 
-    private final static int SMALL_TEST = 1000;
-    private final static int LARGE_TEST = 10000;
+    private final static int SMALL_TEST = 10000;
+    private final static int LARGE_TEST = 30000;
 
     @Rule
     public IntentsTestRule<MainActivity> mActivity = new IntentsTestRule<>(MainActivity.class);

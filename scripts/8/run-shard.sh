@@ -2,12 +2,12 @@
 
 # prepare devices
 devices=()
-for word in $(adb devices | grep -v List | grep device)
+for device in $(adb devices | grep -v List | grep device)
 do
-    if [ $word == "device" ]; then
+    if [ $device == "device" ]; then
         continue
     fi
-    devices+=("$word")
+    devices+=("$device")
 done
 
 # total tests
@@ -83,18 +83,30 @@ for ((i=0;i<$threads;i++)); do
     pool[i]=$CONST_NAN_PID
 done
 
-# get devices
+# clean
+rm artifacts/times.txt
 
+# run the test with pool of processes
 i=0
+finished=false
 while true; do
 
+    # search for first idle process
     thread=-1
+    idleCount=0
     for pi in "${!pool[@]}"
     do
         pid=${pool[$pi]}
         if ! isPIDup $pid; then
             thread=$pi
-            break
+
+            # if we still have tests to run, then 'break', and use the idle thread
+            if $finished; then
+                idleCount=$(( $idleCount + 1 ))
+            else
+                break
+            fi
+
         fi
     done
 
@@ -102,12 +114,15 @@ while true; do
     if [ $thread -eq -1 ]; then
         sleep 0.1
         continue
+    elif [ $idleCount -eq $threads ] ; then
+        echo "===== Finished ====="
+        break
     fi
 
     # if we already tested all tests
     if [ $i -eq $num ] ; then
-        echo "===== Finished ====="
-        break
+        finished=true
+        continue
     fi
 
     # the idle selected device that will run the next group of tests
