@@ -1,5 +1,9 @@
 #!/bin/bash
 
+startTime=$(node -e 'console.log(Date.now())')
+fullPlanFile=$1
+artifactsFolder=$2
+
 # prepare devices
 devices=()
 for device in $(adb devices | grep -v List | grep device)
@@ -11,7 +15,8 @@ do
 done
 
 # total tests
-num=$(grep -c "~~~" artifacts/plan-tests.txt)
+num=$(grep -c "~~~" $fullPlanFile)
+echo $num
 
 # parallel processes as number of devices
 threads=${#devices[@]}
@@ -44,11 +49,13 @@ buildTestGroupPlan() {
     # params
     groupNum=$1
     selectedDevice=$2
+    fullPlanFile=$3
+    artifactsFolder=$4
     i=0
-    planfile="artifacts/plan-tests-$selectedDevice.txt"
+    planfile="$artifactsFolder/plan-tests-$selectedDevice.txt"
     rm $planfile
     grouping=false
-    for line in `cat "artifacts/plan-tests.txt"`
+    for line in `cat "$fullPlanFile"`
     do
 
         #
@@ -84,7 +91,7 @@ for ((i=0;i<$threads;i++)); do
 done
 
 # clean
-rm artifacts/times.txt
+rm "$artifactsFolder/times.txt"
 
 # run the test with pool of processes
 i=0
@@ -129,10 +136,10 @@ while true; do
     selectedDevice=${devices[$thread]}
 
     # we build file: "plan-tests-$selectedDevice.txt" that holds tests only for this group
-    buildTestGroupPlan $i $selectedDevice
+    buildTestGroupPlan $i $selectedDevice $fullPlanFile $artifactsFolder
 
     # run group of tests on selected device
-    ./scripts/8/run.sh artifacts/plan-tests-$selectedDevice.txt artifacts $selectedDevice &
+    ./scripts/8/run.sh "$artifactsFolder/plan-tests-$selectedDevice.txt" $artifactsFolder $selectedDevice &
     pid=$!
     echo "Running: $i - device: $selectedDevice, thread: $thread, pid: $pid"
     pool[$thread]=$pid
@@ -140,6 +147,11 @@ while true; do
     # increase to next one
     i=$(( $i + 1 ))
 done
+
+endTime=$(node -e 'console.log(Date.now())')
+echo "****"
+echo "duration: $((endTime-startTime)) millis."
+echo "****"
 
 # looks like we are fine
 echo "All Tests PASSED"

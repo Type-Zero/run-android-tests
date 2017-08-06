@@ -84,7 +84,9 @@ You will fail on one of tests :x:. Now go and check the **artifacts** :white_che
 
 ### Explanation + Details
 
-Step by step details on this blog post: https://medium.com/@sromku/running-android-ui-tests-53e85e5c8da8
+#### Part 1
+
+Step by step blog post: https://medium.com/@sromku/running-android-ui-tests-53e85e5c8da8
 
 1. Building Execution Plan
 2. Collect Logs, Record Video, Dump DB, Shared Preferences
@@ -94,6 +96,13 @@ Step by step details on this blog post: https://medium.com/@sromku/running-andro
 6. Run tests by #tags
 7. Dump network stats, battery, alarms and more.
 8. All together
+
+#### Part 2
+
+Second blog post: TODO
+
+9. Parallel tests execution
+10. Dependencies tests on same device
 
 ### Author
 

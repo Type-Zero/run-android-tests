@@ -35,7 +35,9 @@ public class ShardA {
     public void testA() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
         Utils.sleep(SMALL_TEST);
-        assertEquals("com.sromku.sample.runtests", appContext.getPackageName());
+
+        // will fail for purpose ;)
+        assertEquals("--com.sromku.sample.runtests--", appContext.getPackageName());
     }
 
     @Test
