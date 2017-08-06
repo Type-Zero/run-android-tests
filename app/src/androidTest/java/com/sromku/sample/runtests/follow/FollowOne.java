@@ -1,4 +1,4 @@
-package com.sromku.sample.runtests.all;
+package com.sromku.sample.runtests.follow;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -8,8 +8,6 @@ import android.support.test.runner.AndroidJUnit4;
 import com.sromku.sample.runtests.ClearData;
 import com.sromku.sample.runtests.Following;
 import com.sromku.sample.runtests.MainActivity;
-import com.sromku.sample.runtests.Parameterized;
-import com.sromku.sample.runtests.Tags;
 import com.sromku.sample.runtests.Utils;
 
 import org.junit.FixMethodOrder;
@@ -22,16 +20,13 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class AllOne {
+public class FollowOne {
 
     @Rule
     public IntentsTestRule<MainActivity> mActivity = new IntentsTestRule<>(MainActivity.class);
 
-    private final String[] params = new String[]{
-            "a", "A", "Aa"
-    };
-
     @Test
+    @ClearData
     public void testA() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
         Utils.sleep(2000);
@@ -39,8 +34,7 @@ public class AllOne {
     }
 
     @Test
-    @ClearData
-    @Tags(tags = {"extreme"})
+    @Following
     public void testB() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
         Utils.sleep(2000);
@@ -48,24 +42,28 @@ public class AllOne {
     }
 
     @Test
-    @Tags(tags = {"sanity", "medium"})
-    @Parameterized.Repeat(count = 3)
-    @Following
+    @ClearData
     public void testC() throws Exception {
-        int index = Parameterized.getIndex();
-        if (index < 0) {
-            return;
-        }
-        String param = params[index];
+        Context appContext = InstrumentationRegistry.getTargetContext();
         Utils.sleep(2000);
-        assertEquals("a", param.toLowerCase());
+        assertEquals("com.sromku.sample.runtests", appContext.getPackageName());
     }
 
     @Test
+    @ClearData
+    @Following
     public void testD() throws Exception {
         Context appContext = InstrumentationRegistry.getTargetContext();
         Utils.sleep(2000);
         assertEquals("--com.sromku.sample.runtests--", appContext.getPackageName());
+    }
+
+    @Test
+    @Following
+    public void testE() throws Exception {
+        Context appContext = InstrumentationRegistry.getTargetContext();
+        Utils.sleep(2000);
+        assertEquals("com.sromku.sample.runtests", appContext.getPackageName());
     }
 
 }
