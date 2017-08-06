@@ -4,6 +4,7 @@
 package=com.sromku.sample.runtests
 planFile=$1
 outputDir=$2
+device=$3
 
 # check for correct input
 if [ -z $planFile ] || [ -z $outputDir ] ; then
@@ -11,37 +12,54 @@ if [ -z $planFile ] || [ -z $outputDir ] ; then
     exit 1
 fi
 
-# check for connected devices
-if [ -z "$(adb devices | grep -v List | grep device)" ] ; then
-    echo "No connected devices"
-    exit 1
+# if specific device is not passed, we choose the first one that is attached
+if [ -z $device ] ; then
+
+    # pick the first device in the list
+    for dl in $(adb devices | grep -v List | grep device)
+    do
+        if [ $dl == "device" ]; then
+            continue
+        fi
+        device=$dl
+        echo "Selected device: $device"
+        break
+    done
+
+    # if device is empty, say no connected devices
+    if [ -z $device ] ; then
+        echo "No connected devices"
+        exit 1
+    fi
+
 fi
+
 
 # clear notifications
 clearNotifications() {
-    adb shell input keyevent 3
-    adb shell input swipe 0 0 0 300
-    num=$(adb shell dumpsys notification | grep NotificationRecord | wc -l)
+    adb -s $1 shell input keyevent 3
+    adb -s $1 shell input swipe 0 0 0 300
+    num=$(adb -s "$1" shell dumpsys notification | grep NotificationRecord | wc -l)
     while [ $num -gt 0 ]; do
-        adb shell input swipe 0 400 300 400
+        adb -s $1 shell input swipe 0 400 300 400
         num=$(( $num - 1 ))
     done
-    adb shell input keyevent 3
+    adb -s $1 shell input keyevent 3
 }
 
-runningTest="$outputDir/running-test.txt"
-recording="recording.mp4"
-logcat="$outputDir/logcat.txt"
-
+# run line by line from plan and execute
 for line in `cat "$planFile"`
 do
 
-    # print full test name
-    echo "$line"
+    # skip grouped separator
+    if [ $line == "~~~" ]; then
+        continue
+    fi
 
     # in case of clear data we execute and move to next line
     if [ $line == "clearData" ]; then
-        adb shell pm clear $package
+        echo "*** Clear data"
+        adb -s $device shell pm clear $package
         sleep 3
         echo ""
         continue
@@ -49,18 +67,36 @@ do
 
     # in case of clear notifications we execute and move to next line
     if [ $line == "clearNotifications" ]; then
-        clearNotifications
+        echo "*** Clear notifications"
+        clearNotifications $device
         sleep 3
         echo ""
         continue
     fi
 
+    # print full test name
+    echo "*** Testing: $line"
+
+    # create folder
+    testDir="$outputDir/$line"
+    mkdir $testDir
+
+    # files we create
+    runningTest="$testDir/running-test-$device.txt"
+    recording="$testDir/recording.mp4"
+    logcat="$testDir/logcat.txt"
+    db="$testDir/app.db"
+    preferences="$testDir/shared_preferences.xml"
+    netstats="$testDir/dumpsys_netstats.txt"
+    batterystats="$testDir/dumpsys_batterystats.txt"
+    alarms="$testDir/dumpsys_alarm.txt"
+
     # start collecting logs
-    adb logcat > "$logcat" &
+    adb -s $device logcat > "$logcat" &
     PID_LOGCAT=$!
 
     # start recording video
-    adb shell screenrecord --bit-rate 6000000 "/sdcard/$recording" &
+    adb -s $device shell screenrecord --bit-rate 6000000 "/sdcard/recording.mp4" &
     PID_RECORDING=$!
 
     # parse to get param (in case of params)
@@ -69,10 +105,15 @@ do
         testArr=(${line//:/ })
         test=${testArr[0]}
         index=${testArr[1]}
-        adb shell am instrument -w -e class $test -e paramIndex $index $package.test/android.support.test.runner.AndroidJUnitRunner > $runningTest
+        adb -s $device shell am instrument -w -e class $test -e paramIndex $index $package.test/android.support.test.runner.AndroidJUnitRunner > $runningTest
     else
         # run as usual
-        adb shell am instrument -w -e class $line $package.test/android.support.test.runner.AndroidJUnitRunner > $runningTest
+        echo "$line"
+        startTime=$(node -e 'console.log(Date.now())')
+        adb -s $device shell am instrument -w -e class $line $package.test/android.support.test.runner.AndroidJUnitRunner > $runningTest
+        endTime=$(node -e 'console.log(Date.now())')
+        echo "test ($line) device ($device) , duration: $((endTime-startTime)) millis."
+        echo "test ($line) device ($device) , duration: $((endTime-startTime)) millis." >> "artifacts/times.txt"
     fi
 
     # kill logcat process
@@ -84,8 +125,8 @@ do
     sleep 3
 
      # pull and remove recording from device
-    adb pull "/sdcard/$recording" $outputDir/$recording
-    adb shell rm "/sdcard/$recording"
+    adb -s $device pull "/sdcard/recording.mp4" $recording
+    adb -s $device shell rm "/sdcard/recording.mp4"
 
     # SCAN for errors
     shortReason=''
@@ -99,33 +140,27 @@ do
     if [ ! -z "$shortReason" ] ; then
 
         # dump db
-        adb shell "run-as $package cat /data/data/$package/databases/app.db" > artifacts/app.db
+        adb -s $device shell "run-as $package cat /data/data/$package/databases/app.db" > $db
 
         # extract preferences
-        adb shell "run-as $package cat /data/data/$package/shared_prefs/'$package'_preferences.xml" > artifacts/shared_preferences.xml
+        adb -s $device shell "run-as $package cat /data/data/$package/shared_prefs/'$package'_preferences.xml" > $preferences
 
         # dump netstats, battery, alarms
-        adb shell dumpsys netstats > artifacts/dumpsys_netstats.txt
-        adb shell dumpsys batterystats > artifacts/dumpsys_batterystats.txt
-        adb shell dumpsys alarm > artifacts/dumpsys_alarm.txt
+        adb -s $device shell dumpsys netstats > $netstats
+        adb -s $device shell dumpsys batterystats > $batterystats
+        adb -s $device shell dumpsys alarm > $alarms
 
-        # exit on fail
+        # fail
         echo "[x] FAIL"
         echo "$shortReason"
-        exit 1
+        echo ""
 
+    else
+
+        # remove dir if we are fine
+        rm -r $testDir
+        echo "[v] OK"
+        echo ""
     fi
 
-    echo "[v] OK"
-    echo ""
-
 done
-
-# clean leftovers since we are fine
-if [ -e $runningTest ]; then
-    rm $runningTest
-fi
-
-# looks like we are fine
-echo "All Tests PASSED"
-echo ""

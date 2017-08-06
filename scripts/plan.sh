@@ -36,6 +36,9 @@ tags=()
 # total tests
 totalTests=0
 
+# total test groups
+totalTestGroups=0
+
 index=-1
 while read p; do
 
@@ -97,6 +100,7 @@ do
     clearData=false
     clearNotifications=false
     repeat=0
+    following=false
 
     # if we passed tags, then by default the test isn't selected
     if [ ! -e $selectedTags ]; then
@@ -134,6 +138,7 @@ do
 
         # if we choose tags for this test
         if [[ $a == "Tags"* ]] && [ ! -e $selectedTags ] ; then
+
             # we check for intersection between test tags and selected tags
             tagsAArr=(${tags[$i]//,/ })
             tagsBArr=(${selectedTags//,/ })
@@ -148,6 +153,11 @@ do
 
         fi
 
+        # check for clear data
+        if [ "$a" == "Following" ] ; then
+            following=true
+        fi
+
     done
 
     # if test wasn't selected by tags, then continue to next test
@@ -158,6 +168,13 @@ do
     # by default it will run only once, unless we set repeat for parameterized tests
     for j in $(seq 0 $repeat)
     do
+
+        # separate
+        if ! $following; then
+            echo "~~~" >> $planOutput
+            # total test groups =+1
+            totalTestGroups=$((totalTestGroups + 1))
+        fi
 
         # if we need to clear data
         if $clearData; then
@@ -190,3 +207,4 @@ done
 # total tests
 cat $planOutput
 echo "TOTAL_TESTS=$totalTests"
+echo "TOTAL_TEST_GROUPS=$totalTestGroups"
