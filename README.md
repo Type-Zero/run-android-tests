@@ -2,7 +2,7 @@
 
 ### Blog posts 
 
-**Part 1** - https://medium.com/medisafe-tech-blog/running-android-ui-tests-53e85e5c8da8
+📗 **Part 1** - https://medium.com/medisafe-tech-blog/running-android-ui-tests-53e85e5c8da8
 
 1. Building Execution Plan.
 2. Collect Logs, Record Video, Dump DB, Shared Preferences.
@@ -13,7 +13,7 @@
 7. Dump network stats, battery, alarms and more.
 8. All together.
 
-**Part 2** - https://medium.com/medisafe-tech-blog/running-android-ui-tests-part-2-15ef08056d94
+📗 **Part 2** - https://medium.com/medisafe-tech-blog/running-android-ui-tests-part-2-15ef08056d94
 
 9. Parallel tests execution.
 10. Grouping following tests. 
