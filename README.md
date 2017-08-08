@@ -1,4 +1,4 @@
-# Running Android UI Tests
+# Running Android UI Tests - Part 1
 
 Follow this blog post: https://medium.com/@sromku/running-android-ui-tests-53e85e5c8da8
 
@@ -86,7 +86,7 @@ You will fail on one of tests :x:. Now go and check the **artifacts** :white_che
 
 #### Part 1
 
-Step by step blog post: https://medium.com/@sromku/running-android-ui-tests-53e85e5c8da8
+Blog post: https://medium.com/@sromku/running-android-ui-tests-53e85e5c8da8
 
 1. Building Execution Plan
 2. Collect Logs, Record Video, Dump DB, Shared Preferences
@@ -99,10 +99,12 @@ Step by step blog post: https://medium.com/@sromku/running-android-ui-tests-53e8
 
 #### Part 2
 
-Second blog post: TODO
+Blog post: https://medium.com/medisafe-tech-blog/running-android-ui-tests-part-2-15ef08056d94
 
 9. Parallel tests execution
 10. Dependencies tests on same device
+
+
 
 ### Author
 
@@ -110,6 +112,3 @@ Second blog post: TODO
 
 ### License
 Apache 2.0
-
-### Diagrams
-Diagrams are done with [balsamiq](https://balsamiq.com/)

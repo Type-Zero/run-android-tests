@@ -1,40 +1,67 @@
-### Design
+# Running Android UI Tests -  Part 2
 
-TODO
+The blog post: https://medium.com/medisafe-tech-blog/running-android-ui-tests-part-2-15ef08056d94
 
-### Running
+### Parallel — The regular approach vs. push approach
+
+#### Setup the tests
+
+Before comparing and running tests make sure to install a sample app and test APKs.
+
+```
+# ---- assemble and install the app + test apks ----
+# build app APK
+./gradlew assembleDebug --stacktrace
+
+# build test APK
+./gradlew assembleAndroidTest --stacktrace
+
+# install app APK
+adb install -r app/build/outputs/apk/app-debug.apk
+
+# install test APK
+adb install -r app/build/outputs/apk/app-debug-androidTest.apk
+```
+
+#### Set the devices
+
+- 40 tests
+- 4 emulators/devices
 
 #### Run the regular way
 
+Change the {device} to one of the connected device names you have. (Run `adb devices` to see them).
+
 ```
 # run shard 0
-adb -s 01e879a2ca701847 shell am instrument -w -r -e package com.sromku.sample.runtests.shard -e numShards 4 -e shardIndex 0 com.sromku.sample.runtests.test/android.support.test.runner.AndroidJUnitRunner
+adb -s {device} shell am instrument -w -r -e package com.sromku.sample.runtests.shard -e numShards 4 -e shardIndex 0 com.sromku.sample.runtests.test/android.support.test.runner.AndroidJUnitRunner
 
 # run shard 1
-adb -s 01e879a2ca701847 shell am instrument -w -r -e package com.sromku.sample.runtests.shard -e numShards 4 -e shardIndex 1 com.sromku.sample.runtests.test/android.support.test.runner.AndroidJUnitRunner
+adb -s {device} shell am instrument -w -r -e package com.sromku.sample.runtests.shard -e numShards 4 -e shardIndex 1 com.sromku.sample.runtests.test/android.support.test.runner.AndroidJUnitRunner
 
 # run shard 2
-adb -s 01e879a2ca701847 shell am instrument -w -r -e package com.sromku.sample.runtests.shard -e numShards 4 -e shardIndex 2 com.sromku.sample.runtests.test/android.support.test.runner.AndroidJUnitRunner
+adb -s {device} shell am instrument -w -r -e package com.sromku.sample.runtests.shard -e numShards 4 -e shardIndex 2 com.sromku.sample.runtests.test/android.support.test.runner.AndroidJUnitRunner
 
 # run shard 3
-adb -s 01e879a2ca701847 shell am instrument -w -r -e package com.sromku.sample.runtests.shard -e numShards 4 -e shardIndex 3 com.sromku.sample.runtests.test/android.support.test.runner.AndroidJUnitRunner
+adb -s {device} shell am instrument -w -r -e package com.sromku.sample.runtests.shard -e numShards 4 -e shardIndex 3 com.sromku.sample.runtests.test/android.support.test.runner.AndroidJUnitRunner
 ```
 
-
-#### Run the parallel way
+#### Run the push approach
 
 ```
+# dump tests to raw file
 ./scripts/8/raw.sh artifacts/raw-tests.txt
+
+# build a plan
 ./scripts/8/plan.sh artifacts/raw-tests.txt artifacts/plan-tests.txt
+
+# run tests in parallel on all connected devices & emulators
 ./scripts/8/run-shard.sh artifacts/plan-tests.txt artifacts
 ```
 
-### Benchmark
-
-> - 40 tests
-> - 4 emulators - Nexus 5x API 25
-
 #### Raw results
+
+In our case we are using: 4 emulators - Nexus 5x API 25
 
 **Test / Device and time in both ways**
 
@@ -97,7 +124,7 @@ adb -s 01e879a2ca701847 shell am instrument -w -r -e package com.sromku.sample.r
 Regular way:
 - Max time: `302.90`
 
-Parallel way:
+Push way:
 - Max time: `175.40` 
 
 
