@@ -14,7 +14,7 @@
 
 ### Script
 
-📃 **`raw.sh <rawfilepath>`**
+🔹 **`raw.sh <rawfilepath>`**
 
 ```
 - rawfilepath = The path to a raw file that will hold all raw tests with meta data.
@@ -36,7 +36,7 @@ INSTRUMENTATION_STATUS: tags=sanity,medium
 
 If you try to read this unreadable file, you will see the test class and name, annotations and tags. We use it later to build a plan.
 
-📃 **`plan.sh <rawfilepath> <planfilepath>`**
+🔹 **`plan.sh <rawfilepath> <planfilepath>`**
 
 ```
 - rawfilepath = The path to the raw file that holds raw tests with meta data.
@@ -66,7 +66,7 @@ TOTAL_TEST_GROUPS=4
 
 You can see the tests split into executable groups of tests, divided by ~~~. This is useful when running in parallel. Check the [com.sromku.sample.runtests.all](https://github.com/medisafe/run-android-tests/tree/master/app/src/androidTest/java/com/sromku/sample/runtests/all) package to see the written tests and used annotations.
 
-📃 **`run.sh <planfilepath> <outputdir> [device]`**
+🔹 **`run.sh <planfilepath> <outputdir> [device]`**
 
 ```
 - planfilepath = The path to the excution plan file that will hold groups of tests with commands.
@@ -77,17 +77,15 @@ You can see the tests split into executable groups of tests, divided by ~~~. Thi
 We simply run line by line in <planfilepath> and execute the command or the test.
 
 
-📃 **`run-shard.sh <planfilepath> <outputdir>`**
+🔹 **`run-shard.sh <planfilepath> <outputdir>`**
 
 ```
 - planfilepath = The path to the excution plan file that will hold groups of tests with commands.
 - outputdir = An artifacts folder that will collect all tests outputs like logs, video, dumped db and other files.
 ```
 
-The script will save all connected devices. Then, it will iterate over groups of tests from <planfilepath>, peek the next group, open a new parallel process (PID) and start testing on a 
-
 - List all connected devices.
-- Create array of connected devices and their running processes.
+- Create array of connected devices and map to their running processes.
 - Loop with delay of 100ms and check if process is closed or running. If process isn't running:
 	- Peak executable group of tests (divided by ~~~) and save in *plan-pid-example.txt* 
 	- Call on anew process `run.sh plan-pid-example.txt <outputdir> [device]`
