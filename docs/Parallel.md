@@ -1,8 +1,8 @@
-# Running Android UI Tests -  Part 2
+# Parallel — The regular approach vs. push approach
 
-The blog post: https://medium.com/medisafe-tech-blog/running-android-ui-tests-part-2-15ef08056d94
+📗 The blog post: https://medium.com/medisafe-tech-blog/running-android-ui-tests-part-2-15ef08056d94
 
-### Parallel — The regular approach vs. push approach
+<img src="../assets/sharding.png"/>
 
 #### Setup the tests
 

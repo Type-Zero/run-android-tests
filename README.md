@@ -1,18 +1,31 @@
-# Running Android UI Tests - Part 1
+# Running Android UI Tests
 
-Follow this blog post: https://medium.com/@sromku/running-android-ui-tests-53e85e5c8da8
+### Blog posts 
 
-### Running tests
+**Part 1** - https://medium.com/medisafe-tech-blog/running-android-ui-tests-53e85e5c8da8
 
-<img src="assets/running_tests.png"/>
+1. Building Execution Plan.
+2. Collect Logs, Record Video, Dump DB, Shared Preferences.
+3. Add ‘Clear data’ support.
+4. Add ‘Clear notifications’ support.
+5. Add parameterized support.
+6. Run tests by #tags.
+7. Dump network stats, battery, alarms and more.
+8. All together.
+
+**Part 2** - https://medium.com/medisafe-tech-blog/running-android-ui-tests-part-2-15ef08056d94
+
+9. Parallel tests execution.
+10. Grouping following tests. 
 
 ### Test Options
 We write UI tests same as before. But now, we can add more annotations that will give us more options. 
 
 - `@ClearData` - Clear data via ADB before test execution.
+- `@ClearNotifications` - Clear notification bar via ADB before running the test.
 - `@Repeat` - Repeat the same test X number of times, when current iteration is passed to the test.
 - `@Tags` - You can tag your tests. Later, you can run tests by selected tags only.
-- `@ClearNotifications` - Clear notification bar via ADB before running the test.
+- `@Following` - Will enforce grouping following tests on the same device when running in parallel.
 
 ### Test example
 
@@ -35,6 +48,12 @@ public class ExampleInstrumentedTest {
         String param = params[Parameterized.getIndex()];
         assertEquals("a", param.toLowerCase());
     }
+
+    @Test
+    @Following
+    public void someTestFollowing() throws Exception {
+        assertEquals("a", "A".toLowerCase());
+    }
 }
 ```
 
@@ -48,16 +67,15 @@ In addition to new added options, after each failed test, we fetching and buildi
 - Shared preferences
 - Dumpsys - Netstats, battery, other.
 
-### Flow
-
-<img src="assets/flow.png"/>
 
 ### Run this sample
 
-> Note: <br>
-1. Use real device. <br>
-2. Works for me on Mac and Ubuntu VM (part of CI). 
+**Prepare:** <br>
+1. Clone the repo.
+2. Connect one or more real devices / emulators. <br>
+3. Run on Mac / Ubuntu / Anything that has bash 3.2 (and above)
 
+**Run:**
 ```bash
 # ---- assemble and install the app + test apks ----
 # build app APK
@@ -73,37 +91,16 @@ adb install -r app/build/outputs/apk/app-debug-androidTest.apk
 # create tests raw file
 ./scripts/raw.sh artifacts/raw-tests.txt
 # build execution plan and filter by tags
-./scripts/plan.sh artifacts/raw-tests.txt artifacts/execution-plan.txt -t "sanity,small"
+./scripts/plan.sh artifacts/raw-tests.txt artifacts/execution-plan.txt
 # run the tests
 ./scripts/run.sh artifacts/execution-plan.txt artifacts
 ```
 
-You will fail on one of tests :x:. Now go and check the **artifacts** :white_check_mark: folder :wink:
+### Detailed docs
 
-<img src="assets/artifacts.png"/>
-
-### Explanation + Details
-
-#### Part 1
-
-Blog post: https://medium.com/@sromku/running-android-ui-tests-53e85e5c8da8
-
-1. Building Execution Plan
-2. Collect Logs, Record Video, Dump DB, Shared Preferences
-3. Add ‘Clear data’ support
-4. Add ‘Clear notifications’ support
-5. Add parameterized support
-6. Run tests by #tags
-7. Dump network stats, battery, alarms and more.
-8. All together
-
-#### Part 2
-
-Blog post: https://medium.com/medisafe-tech-blog/running-android-ui-tests-part-2-15ef08056d94
-
-9. Parallel tests execution
-10. Dependencies tests on same device
-
+- [The flow and script explanation](docs/Script.md)
+- [Parallel — The regular approach vs. push approach](docs/Parallel.md)
+- [Grouping following tests](docs/Following.md)
 
 
 ### Author
