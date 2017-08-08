@@ -98,7 +98,7 @@ adb install -r app/build/outputs/apk/app-debug-androidTest.apk
 
 ### Detailed docs
 
-- [The flow and script explanation](docs/Script.md)
+- [The flow and script](docs/Scripts.md)
 - [Parallel — The regular approach vs. push approach](docs/Parallel.md)
 - [Grouping following tests](docs/Following.md)
 
