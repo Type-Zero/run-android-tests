@@ -6,7 +6,9 @@
 
 #### Setup the tests
 
-Before comparing and running tests make sure to install a sample app and test APKs.
+Before comparing and running tests make sure to install a sample app and test APKs.<br>
+Check the [com.sromku.sample.runtests.shard](https://github.com/medisafe/run-android-tests/tree/master/app/src/androidTest/java/com/sromku/sample/runtests/shard) package to see the written tests and used annotations.
+
 
 ```
 # ---- assemble and install the app + test apks ----
