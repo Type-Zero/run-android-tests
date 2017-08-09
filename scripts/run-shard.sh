@@ -154,5 +154,5 @@ echo "duration: $((endTime-startTime)) millis."
 echo "****"
 
 # looks like we are fine
-echo "All Tests PASSED"
+echo "Done"
 echo ""
