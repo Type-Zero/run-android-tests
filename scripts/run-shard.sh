@@ -139,7 +139,7 @@ while true; do
     buildTestGroupPlan $i $selectedDevice $fullPlanFile $artifactsFolder
 
     # run group of tests on selected device
-    ./scripts/8/run.sh "$artifactsFolder/plan-tests-$selectedDevice.txt" $artifactsFolder $selectedDevice &
+    ./scripts/run.sh "$artifactsFolder/plan-tests-$selectedDevice.txt" $artifactsFolder $selectedDevice &
     pid=$!
     echo "Running: $i - device: $selectedDevice, thread: $thread, pid: $pid"
     pool[$thread]=$pid
